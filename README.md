@@ -1,5 +1,4 @@
-# Leneda Power Sensor (Home Assistant custom component)
-
+# Leneda Power
 A small Home Assistant integration that imports power and energy statistics from the [Leneda API](https://www.leneda.lu/en/docs/api-reference#get-aggregated-metering-data) and exposes them as sensors with recorder statistics.
 
 ## Features
