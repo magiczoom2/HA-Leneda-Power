@@ -17,13 +17,15 @@ from homeassistant.components.recorder.statistics import (
 )
 from homeassistant.util import slugify
 
-from .const import (API_BASE_URL, CONF_API_KEY, CONF_ENERGY_ID, 
-                    CONF_METERING_POINT, CONF_OBIS_CODE, 
-                    DEFAULT_POLLING_INTERVAL_HOURS, DEFAULT_POLLING_DAYS_TO_RETRIEVE)
+from .const import (API_BASE_URL, CONF_API_KEY, CONF_ENERGY_ID,
+                    CONF_METERING_POINT, CONF_OBIS_CODE,
+                    CONF_INITIAL_SETUP_DAYS_TO_FETCH,
+                    API_MAX_DAYS_TO_FETCH, API_MIN_DAYS_TO_FETCH,
+                    POLLING_INTERVAL_HOURS)
 
 _LOGGER = logging.getLogger(__name__)
 
-SCAN_INTERVAL = timedelta(hours=DEFAULT_POLLING_INTERVAL_HOURS) # Polling interval
+SCAN_INTERVAL = timedelta(hours=POLLING_INTERVAL_HOURS)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up Leneda Power and Energy sensors."""
@@ -45,15 +47,43 @@ class LenedaBaseSensor(SensorEntity):
         # Use slugify to ensure dots in OBIS codes become underscores in the entity_id
         self.entity_id = f"sensor.{slugify(self._attr_unique_id)}"
 
+    async def get_last_timestamp(self) -> datetime | None:
+        recorder = get_instance(self.hass)
+
+        last_state_stats = await recorder.async_add_executor_job(
+            get_last_statistics, self.hass, 1, self.entity_id, True, {"state"}
+        )
+
+        last_time = None
+        if last_state_stats and self.entity_id in last_state_stats:
+            last_time = last_state_stats[self.entity_id][0]["start"]
+
+        if isinstance(last_time, (int, float)):
+            last_time = datetime.fromtimestamp(last_time, tz=timezone.utc)
+
+        return last_time
+
+    async def get_days_to_fetch(self) -> int:
+        initial_setup_days = self._config[CONF_INITIAL_SETUP_DAYS_TO_FETCH]
+
+        last_timestamp = await self.get_last_timestamp()
+        if last_timestamp:
+            days_since_last = (datetime.now(timezone.utc) - last_timestamp).days
+            fetch_days = max(days_since_last, API_MIN_DAYS_TO_FETCH)
+        else:
+            fetch_days = initial_setup_days
+
+        return fetch_days
+
     async def _fetch_from_api(self, path: str, params: dict):
         """Standardized API fetcher."""
         session = async_get_clientsession(self.hass)
         url = f"{API_BASE_URL}/metering-points/{self._config[CONF_METERING_POINT]}/{path}"
         headers = {
-            "X-API-KEY": self._config[CONF_API_KEY], 
+            "X-API-KEY": self._config[CONF_API_KEY],
             "X-ENERGY-ID": self._config[CONF_ENERGY_ID]
         }
-        
+
         try:
             async with session.get(url, params=params, headers=headers, timeout=30) as resp:
                 if resp.status == 200:
@@ -73,25 +103,38 @@ class LenedaPowerSensor(LenedaBaseSensor):
     unique_id_suffix = "pwr_15min"
 
     async def async_update(self) -> None:
-        params = {
-            "startDateTime": (datetime.now(timezone.utc) - timedelta(days=DEFAULT_POLLING_DAYS_TO_RETRIEVE)).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "endDateTime": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        fetch_days = await self.get_days_to_fetch()
+        end_time = datetime.now(timezone.utc)
+        start_time = end_time - timedelta(days=fetch_days)
+
+        items = []
+        chunk_start = start_time
+        while chunk_start < end_time:
+            chunk_end = min(chunk_start + timedelta(days=API_MAX_DAYS_TO_FETCH), end_time)
+            params = {
+            "startDateTime": chunk_start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "endDateTime": chunk_end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "obisCode": self._config[CONF_OBIS_CODE],
-        }
-        
-        data = await self._fetch_from_api("time-series", params)
-        items = data.get("items", [])
+            }
+            data = await self._fetch_from_api("time-series", params)
+            chunk_items = data.get("items", [])
+            chunk_start = chunk_end
+            if chunk_items:
+                items.extend(chunk_items)
+
+        _LOGGER.info(f"Leneda Power Sensor fetched {len(items)} items")
+
         if not items:
             return
         # self._attr_native_value = float(items[-1]["value"])
 
         # Group 15-min items by Hour (Required by HA Statistics)
         hourly_data = {}
-        for i in items:
-            dt = datetime.fromisoformat(i["startedAt"].replace("Z", "+00:00"))
+        for ii in items:
+            dt = datetime.fromisoformat(ii["startedAt"].replace("Z", "+00:00"))
             hour_ts = dt.replace(minute=0, second=0, microsecond=0)
             if hour_ts not in hourly_data: hourly_data[hour_ts] = []
-            hourly_data[hour_ts].append(float(i["value"]))
+            hourly_data[hour_ts].append(float(ii["value"]))
 
         stats = [
             StatisticData(
@@ -119,16 +162,29 @@ class LenedaEnergySensor(LenedaBaseSensor):
 
     async def async_update(self) -> None:
         """Fetch hourly aggregated data and import energy statistics."""
-        params = {
-            "aggregationLevel": "Hour",
-            "startDate": (datetime.now(timezone.utc) - timedelta(days=DEFAULT_POLLING_DAYS_TO_RETRIEVE)).strftime("%Y-%m-%d"),
-            "endDate": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-            "obisCode": self._config[CONF_OBIS_CODE],
-            "transformationMode": "Accumulation"
-        }
+        fetch_days = await self.get_days_to_fetch()
+        end_time = datetime.now(timezone.utc)
+        start_time = end_time - timedelta(days=fetch_days)
 
-        data = await self._fetch_from_api("time-series/aggregated", params)
-        items = data.get("aggregatedTimeSeries", [])
+        items = []
+        chunk_start = start_time
+        while chunk_start < end_time:
+            chunk_end = min(chunk_start + timedelta(days=API_MAX_DAYS_TO_FETCH), end_time)
+            params = {
+            "aggregationLevel": "Hour",
+            "startDate": chunk_start.strftime("%Y-%m-%d"),
+            "endDate": chunk_end.strftime("%Y-%m-%d"),
+            "obisCode": self._config[CONF_OBIS_CODE],
+            "transformationMode": "Accumulation",
+            }
+            data = await self._fetch_from_api("time-series/aggregated", params)
+            chunk_items = data.get("aggregatedTimeSeries", [])
+            if chunk_items:
+                items.extend(chunk_items)
+            chunk_start = chunk_end
+
+        _LOGGER.info(f"Leneda Power Sensor fetched {len(items)} items")
+
         if not items:
             return
 
@@ -158,16 +214,7 @@ class LenedaEnergySensor(LenedaBaseSensor):
             running_sum = last_sum_stats[self.entity_id][0].get("sum") or 0.0
 
         # --- 2. Get last TIMESTAMP ---
-        last_state_stats = await recorder.async_add_executor_job(
-            get_last_statistics, self.hass, 1, self.entity_id, True, {"state"}
-        )
-
-        last_time = None
-        if last_state_stats and self.entity_id in last_state_stats:
-            last_time = last_state_stats[self.entity_id][0]["start"]
-        
-        if isinstance(last_time, (int, float)):
-            last_time = datetime.fromtimestamp(last_time, tz=timezone.utc)
+        last_time = await self.get_last_timestamp()
 
         # --- 3. Build new statistics ---
         stat_data = []
