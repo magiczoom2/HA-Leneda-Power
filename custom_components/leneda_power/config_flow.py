@@ -2,7 +2,10 @@
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.helpers import config_validation as cv
-from .const import DOMAIN, CONF_API_KEY, CONF_ENERGY_ID, CONF_METERING_POINT, CONF_OBIS_CODE, DEFAULT_OBIS_CODE
+from .const import (DOMAIN, 
+                    CONF_API_KEY, CONF_ENERGY_ID, CONF_METERING_POINT, 
+                    CONF_OBIS_CODE, DEFAULT_OBIS_CODE, 
+                    CONF_INITIAL_SETUP_DAYS_TO_FETCH, DEFAULT_INITIAL_SETUP_DAYS_TO_FETCH)
 
 class LenedaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
@@ -19,6 +22,7 @@ class LenedaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_ENERGY_ID): cv.string,
                 vol.Required(CONF_METERING_POINT): cv.string,
                 vol.Required(CONF_OBIS_CODE, default=DEFAULT_OBIS_CODE): cv.string,
+                vol.Required(CONF_INITIAL_SETUP_DAYS_TO_FETCH, 
+                             default=DEFAULT_INITIAL_SETUP_DAYS_TO_FETCH): cv.positive_int,
             })
         )
-    
