@@ -137,7 +137,7 @@ class LenedaEnergySensor(LenedaBaseSensor):
 
         # 2. Prepare Statistics
         metadata = StatisticMetaData(
-            mean_type=StatisticMeanType.ARITHMETIC, has_sum=True, name=self._attr_name,
+            has_sum=True, name=self._attr_name,
             source="recorder", statistic_id=self.entity_id,
             unit_of_measurement=self._attr_native_unit_of_measurement,
             unit_class="energy"
@@ -186,9 +186,6 @@ class LenedaEnergySensor(LenedaBaseSensor):
                 StatisticData(
                     start=item_time,
                     state=val,
-                    mean=val,
-                    min=val,
-                    max=val,
                     sum=running_sum
                 )
             )
