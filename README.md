@@ -1,20 +1,54 @@
+![Release](https://img.shields.io/github/release/magiczoom2/HA-Leneda-power.svg)
+
 # Leneda Power
-A small Home Assistant integration that imports power and energy statistics from the [Leneda API](https://www.leneda.lu/en/docs/api-reference#get-aggregated-metering-data) and exposes them as sensors with recorder statistics.
+A small Home Assistant integration that imports electric power and energy statistics from the [Leneda API](https://www.leneda.lu/en/docs/api-reference) and exposes them as sensors with recorder statistics.
+
+- [Leneda Power](#leneda-power)
+  - [Features](#features)
+    - [Sensors](#sensors)
+    - [Energy Dashboard](#energy-dashboard)
+    - [Statistics Graph Card](#statistics-graph-card)
+  - [Installation](#installation)
+    - [HACS Installation (Recommended)](#hacs-installation-recommended)
+    - [Manual Installation](#manual-installation)
+  - [Configuration options](#configuration-options)
 
 ## Features
-- `Power Demand` — 15-minute power measurements (kW) aggregated to hourly statistics with min, max and mean.
-- `Energy Consumption` — hourly aggregated energy (kWh) statistics with cumulative sum and mean.
+### Sensors
+- `Power Demand` sensor — electric power measurements (kW) aggregated to hourly statistics with value, min, max and mean.
+- `Energy Consumption` sensor — electric energy measurements (kWh) aggregated to hourly statistics with cumulative sum and value.
 
-## Installation (Manual)
-1. Copy the `leneda_power` folder into your Home Assistant `custom_components` directory so the path looks like `custom_components/leneda_power`.
-2. Restart Home Assistant.
-3. Go to Settings → Devices & Services → Add Integration and search for “Leneda Power”.
+### Energy Dashboard
+The power and energy sensors can be connected to the [Energy Dashboard](https://www.home-assistant.io/dashboards/energy/)
+![energy dashboard](./docs/energy_dashboard.png)
 
-### Configuration options
+### Statistics Graph Card
+The power and energy sensors data can be visualized using [Statistics Graph Card](https://www.home-assistant.io/dashboards/statistics-graph/)
+![energy dashboard](./docs/statistics_graph_card.png)
+
+## Installation
+### HACS Installation (Recommended)
+1. Open **HACS** → **⋮** → **Custom repositories** (See [HACS Custom Repositories](https://hacs.xyz/docs/faq/custom_repositories/))
+2. Add repository URL `https://github.com/magiczoom2/HA-Leneda-power` and set category to **Integration**, then click **Add**.
+3. In HACS search for **Leneda Power**, click **Download**, then restart Home Assistant.
+4. Go to **Settings** → **Devices & Services** → **+ Add Integration** and search for **Leneda Power**.
+
+
+### Manual Installation
+
+1. Download the latest release from the [Releases](https://github.com/magiczoom2/HA-Leneda-power/releases) page.
+2. Copy the `custom_components/leneda_power` folder to your Home Assistant `config/custom_components/` directory.
+3. Restart Home Assistant.
+4. Go to **Settings** → **Devices & Services** → **+ Add Integration** and search for **Leneda Power**.
+
+## Configuration options
 When adding the integration you will be prompted for the following values:
-- `metering_point` — your Leneda metering point identifier.
-- `energy_id` — your Leneda energy identifier.
-- `api_key` — Leneda API key.
-- `obis_code` — OBIS code to read (default: `1-1:1.29.0`).
+- **Required** Get from your [Leneda profile](https://app.leneda.eu/my-profile)
+  - `metering_point` — your Leneda metering point identifier.
+  - `energy_id` — your Leneda energy identifier.
+  - `api_key` — Leneda API key. [How to get an API key?](https://www.leneda.lu/en/docs/how-to-generate-and-manage-api-keys)
+- **Optional**
+  - `days_to_fetch_during_initial_setup` — number of past days of historical data to download during initial setup (integer, default: `180` days). 
+  - `obis_code` — [OBIS code](https://www.leneda.lu/en/docs/obis-code-meaning) to read (default: `1-1:1.29.0`).
 
 
