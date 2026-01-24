@@ -1,6 +1,6 @@
 {
   "domain": "leneda",
-  "name": "Leneda Power",
+  "name": "Leneda",
   "codeowners": ["@magiczoom2"],
   "config_flow": true,
   "dependencies": ["recorder"],

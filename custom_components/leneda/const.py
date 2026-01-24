@@ -1,4 +1,4 @@
-"""Constants for the Leneda Power integration."""
+"""Constants for the Leneda integration."""
 DOMAIN = "leneda"
 CONF_METERING_POINT = "metering_point"
 CONF_ENERGY_ID = "energy_id"

@@ -1,13 +1,13 @@
 ![Release](https://img.shields.io/github/release/magiczoom2/HA-Leneda-power.svg)
 
-# <img src="docs/leneda_icon.svg" alt="Description" width="20" height="20"> <img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="20" height="20"> Leneda Power
+# <img src="docs/leneda_icon.svg" alt="Description" width="20" height="20"> <img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="20" height="20"> Leneda
 A small 
 <img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="10" height="10"> 
 Home Assistant integration that imports electric power and energy statistics from the 
 <img src="docs/leneda_icon.svg" alt="Description" width="10" height="10"> 
 [Leneda API](https://www.leneda.lu/en/docs/api-reference) and exposes them as sensors with recorder statistics.
 
-- [  Leneda Power](#--leneda-power)
+- [  Leneda](#--leneda)
   - [Features](#features)
     - [Sensors](#sensors)
     - [Energy Dashboard](#energy-dashboard)
@@ -34,8 +34,8 @@ The power and energy sensors data can be visualized using [Statistics Graph Card
 ### HACS Installation (Recommended)
 1. Open **HACS** → **⋮** → **Custom repositories** (See [HACS Custom Repositories](https://hacs.xyz/docs/faq/custom_repositories/))
 2. Add repository URL `https://github.com/magiczoom2/HA-Leneda-power` and set category to **Integration**, then click **Add**.
-3. In HACS search for **Leneda Power**, click **Download**, then restart Home Assistant.
-4. Go to **Settings** → **Devices & Services** → **+ Add Integration** and search for **Leneda Power**.
+3. In HACS search for **Leneda**, click **Download**, then restart Home Assistant.
+4. Go to **Settings** → **Devices & Services** → **+ Add Integration** and search for **Leneda**.
 
 
 ### Manual Installation
@@ -43,7 +43,7 @@ The power and energy sensors data can be visualized using [Statistics Graph Card
 1. Download the latest release from the [Releases](https://github.com/magiczoom2/HA-Leneda-power/releases) page.
 2. Copy the `custom_components/leneda` folder to your Home Assistant `config/custom_components/` directory.
 3. Restart Home Assistant.
-4. Go to **Settings** → **Devices & Services** → **+ Add Integration** and search for **Leneda Power**.
+4. Go to **Settings** → **Devices & Services** → **+ Add Integration** and search for **Leneda**.
 
 ## Configuration options
 When adding the integration you will be prompted for the following values:

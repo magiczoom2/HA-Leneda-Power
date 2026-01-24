@@ -191,7 +191,7 @@ class LenedaEnergySensor(LenedaBaseSensor):
             if chunk_items:
                 items.extend(chunk_items)
 
-        _LOGGER.info(f"Leneda Power Sensor fetched {len(items)} items")
+        _LOGGER.info(f"Leneda Energy Sensor fetched {len(items)} items")
 
         if not items:
             return

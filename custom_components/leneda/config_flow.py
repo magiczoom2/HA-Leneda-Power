@@ -1,4 +1,4 @@
-"""Config flow for Leneda Power."""
+"""Config flow for Leneda."""
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.helpers import config_validation as cv
