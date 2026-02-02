@@ -4,12 +4,10 @@
 Disclaimer: This is an unofficial custom integration. This project is not affiliated with, endorsed by, or associated with Leneda, Creos, Enovos, or Home Assistant. All product names, logos, and brands are property of their respective owners.
 ```
 ---
-# <img src="docs/leneda_icon.svg" alt="Description" width="20" height="20"> <img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="20" height="20"> Leneda
-A small 
-<img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="10" height="10"> 
-Home Assistant integration that imports electric power and energy statistics from the 
+# <img src="docs/leneda_icon.svg" alt="Description" width="20" height="20"> <img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="20" height="20"> [Leneda Power](https://github.com/magiczoom2/HA-Leneda-Power)
+**A Home Assistant Integration** that imports electric power and energy statistics from the 
 <img src="docs/leneda_icon.svg" alt="Description" width="10" height="10"> 
-[Leneda API](https://www.leneda.lu/en/docs/api-reference) and exposes them as sensors with recorder statistics.
+[Leneda API](https://www.leneda.lu/en/docs/api-reference) of Luxembourg energy providers and exposes them as sensors with statistics.
 
 ## Features
 ### Sensors
