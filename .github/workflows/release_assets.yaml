@@ -17,7 +17,7 @@ jobs:
       - name: Create leneda.zip from Repo
         run: |
           # Creates a zip of the current HEAD, excluding .git files
-          git archive --format=zip HEAD > leneda.zip
+          git archive --format=zip HEAD:custom_components/leneda/ > leneda.zip
 
       - name: Upload leneda.zip to Release
         uses: softprops/action-gh-release@v2
