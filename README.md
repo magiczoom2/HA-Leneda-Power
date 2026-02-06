@@ -8,14 +8,24 @@ Disclaimer: This is an unofficial custom integration. This project is not affili
 ```
 ---
 # <img src="docs/leneda_icon.svg" alt="Description" width="20" height="20"> <img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="20" height="20"> [Leneda Power](https://github.com/magiczoom2/HA-Leneda-Power)
-**A Home Assistant Integration** that imports electric power and energy statistics from the 
+**A Home Assistant Integration** that imports energy consumption and production statistics from the 
 <img src="docs/leneda_icon.svg" alt="Description" width="10" height="10"> 
 [Leneda API](https://www.leneda.lu/en/docs/api-reference) of Luxembourg energy providers and exposes them as sensors with statistics.
 
 ## Features
 ### Sensors
-- `Power Demand` sensor — electric power measurements (kW) aggregated to hourly statistics with value, min, max and mean.
-- `Energy Consumption` sensor — electric energy measurements (kWh) aggregated to hourly statistics with cumulative sum and value.
+- `Metering data` sensor 
+- `Aggregated metering data` sensor
+
+For example, the default OBIS code `1-1:1.29.0` shows electricity consumption as follows:
+- `Active Power Consumption` sensor — electric power measurements (kW) aggregated to hourly statistics with value, min, max and mean.
+- `Active Energy Consumption` sensor — electric energy measurements (kWh) aggregated to hourly statistics with cumulative sum and value.
+### Multiple Entries (Metering points and OBIS Codes)
+You can configure multiple entries per combination of metering point and [OBIS code](https://www.leneda.lu/en/docs/obis-code-meaning). Depending on what OBIS codes your Leneda metering point provides, your sensors can be for:
+- Electricity energy (kWh) and power (kW) consumption or production
+- Gas volume (m³) consumption
+
+![Multiple entries](./docs//multiple%20entries.png)
 
 ### Energy Dashboard
 The power and energy sensors can be connected to the [Energy Dashboard](https://www.home-assistant.io/dashboards/energy/)
