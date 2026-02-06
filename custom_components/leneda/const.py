@@ -1,5 +1,5 @@
 from homeassistant.const import UnitOfPower, UnitOfEnergy, UnitOfVolume, UnitOfReactivePower, UnitOfReactiveEnergy
-from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 
 """Constants for the Leneda integration."""
 DOMAIN = "leneda"
@@ -21,179 +21,247 @@ API_MIN_DAYS_TO_FETCH = 2 # Minimum days to fetch even if last statistics was re
 OBIS_HA_MAP = {
     # --- Standard Electricity (Power) ---
     "1-1:1.29.0": {
+        "description": "Measured active consumption",
+        "service_type": "Consumption",
+        
         "name": "Active Power Consumption",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Measured active consumption",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Active Energy Consumption",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-1:2.29.0": {
+        "description": "Measured active production",
+        "service_type": "Production",
+        
         "name": "Active Power Production",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Production",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Measured active production",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Active Energy Production",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-1:3.29.0": {
+        "aggregated_name": "Reactive Energy Consumption",
+        "service_type": "Consumption",
+        
         "name": "Reactive Power Consumption",
         "unit": UnitOfReactivePower.KILO_VOLT_AMPERE_REACTIVE,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.REACTIVE_POWER,
-        "aggregated_name": "Reactive Energy Consumption",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "description": "Measured reactive consumption",
         "aggregation_unit": UnitOfReactiveEnergy.KILO_VOLT_AMPERE_REACTIVE_HOUR,
-        "aggregation_device_class": SensorDeviceClass.REACTIVE_ENERGY
+        "aggregation_device_class": SensorDeviceClass.REACTIVE_ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-1:4.29.0": {
+        "description": "Measured reactive production",
+        "service_type": "Consumption",
+        
         "name": "Reactive Power Production",
         "unit": UnitOfReactivePower.KILO_VOLT_AMPERE_REACTIVE,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.REACTIVE_POWER,
-        "description": "Measured reactive production",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Reactive Energy Production",
         "aggregation_unit": UnitOfReactiveEnergy.KILO_VOLT_AMPERE_REACTIVE_HOUR,
-        "aggregation_device_class": SensorDeviceClass.REACTIVE_ENERGY
+        "aggregation_device_class": SensorDeviceClass.REACTIVE_ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
 
     # --- Sharing Groups (Consumption) ---
     "1-65:1.29.1": {
+        "description": "Consumption covered by production of layer 1 sharing Group (AIR)",
+        "service_type": "Consumption",
+        
         "name": "Shared Power Consumption L1 (AIR)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Consumption covered by production of layer 1 sharing Group (AIR)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Consumption L1 (AIR)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:1.29.3": {
+        "description": "Consumption covered by production of layer 2 sharing Group (ACR/ACF/AC1)",
+        "service_type": "Consumption",
+        
         "name": "Shared Power Consumption L2 (ACR/ACF)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Consumption covered by production of layer 2 sharing Group (ACR/ACF/AC1)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Consumption L2 (ACR/ACF)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:1.29.2": {
+        "description": "Consumption covered by production of layer 3 sharing Group (CEL)",
+        "service_type": "Consumption",
+        
         "name": "Shared Power Consumption L3 (CEL)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Consumption covered by production of layer 3 sharing Group (CEL)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Consumption L3 (CEL)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:1.29.4": {
+        "description": "Consumption covered by production of layer 4 sharing Group (APS/CER/CEN)",
+        "service_type": "Consumption",
+        
         "name": "Shared Power Consumption L4 (APS/CER)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Consumption covered by production of layer 4 sharing Group (APS/CER/CEN)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Consumption L4 (APS/CER)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:1.29.9": {
+        "description": "Remaining consumption after sharing invoiced by supplier",
+        "service_type": "Consumption",
+        
         "name": "Grid Power Consumption (Remaining)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Remaining consumption after sharing invoiced by supplier",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Grid Energy Consumption (Remaining)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
 
     # --- Sharing Groups (Production) ---
     "1-65:2.29.1": {
+        "description": "Production shared within layer 1 sharing Group (AIR)",
+        "service_type": "Production",
+        
         "name": "Shared Power Production L1 (AIR)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Production",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Production shared within layer 1 sharing Group (AIR)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Production L1 (AIR)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:2.29.3": {
+        "description": "Production shared within layer 2 sharing Group (ACR/ACF/AC1)",
+        "service_type": "Production",
+        
         "name": "Shared Power Production L2 (ACR/ACF)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Production",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Production shared within layer 2 sharing Group (ACR/ACF/AC1)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Production L2 (ACR/ACF)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:2.29.2": {
+        "description": "Production shared within layer 3 sharing Group (CEL)",
+        "service_type": "Production",
+        
         "name": "Shared Power Production L3 (CEL)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Production",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Production shared within layer 3 sharing Group (CEL)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Production L3 (CEL)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:2.29.4": {
+        "description": "Production shared within layer 4 sharing Group (APS/CER/CEN)",
+        "service_type": "Production",
+        
         "name": "Shared Power Production L4 (APS/CER)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Production",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Production shared within layer 4 sharing Group (APS/CER/CEN)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Shared Energy Production L4 (APS/CER)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-65:2.29.9": {
+        "description": "Remaining production after sharing sold to market",
+        "service_type": "Production",
+        
         "name": "Grid Power Production (Remaining)",
         "unit": UnitOfPower.KILO_WATT,
-        "service_type": "Production",
         "device_class": SensorDeviceClass.POWER,
-        "description": "Remaining production after sharing sold to market",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Grid Energy Production (Remaining)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
 
     # --- Gas & Energy ---
     "7-1:99.23.15": {
+        "description": "Measured consumed volume",
+        "service_type": "Consumption",
+        
         "name": "Gas Volume",
         "unit": UnitOfVolume.CUBIC_METERS,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.GAS,
-        "description": "Measured consumed volume",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Aggregated Gas Volume",
         "aggregation_unit": UnitOfVolume.CUBIC_METERS,
-        "aggregation_device_class": SensorDeviceClass.GAS
+        "aggregation_device_class": SensorDeviceClass.GAS,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "7-1:99.23.17": {
+        "description": "Measured consumed standard volume (Nm³)",
+        "service_type": "Consumption",
+        
         "name": "Gas Standard Volume",
         "unit": UnitOfVolume.CUBIC_METERS,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.GAS,
-        "description": "Measured consumed standard volume (Nm³)",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Aggregated Gas Standard Volume",
         "aggregation_unit": UnitOfVolume.CUBIC_METERS,
-        "aggregation_device_class": SensorDeviceClass.GAS
+        "aggregation_device_class": SensorDeviceClass.GAS,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "7-20:99.33.17": {
+        "description": "Measured consumed energy",
+        "service_type": "Consumption",
+        
         "name": "Gas Energy",
         "unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "service_type": "Consumption",
         "device_class": SensorDeviceClass.ENERGY,
-        "description": "Measured consumed energy",
+        "state_class": SensorStateClass.MEASUREMENT,
+        
         "aggregated_name": "Aggregated Gas Energy",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
-        "aggregation_device_class": SensorDeviceClass.ENERGY
+        "aggregation_device_class": SensorDeviceClass.ENERGY,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     }
 }

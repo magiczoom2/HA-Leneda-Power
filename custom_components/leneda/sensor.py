@@ -102,7 +102,6 @@ class LenedaBaseSensor(SensorEntity):
 class LenedaMeteringSensor(LenedaBaseSensor):
     """15-minute metering data sensor (kW) - Aggregated to Hourly for Statistics."""
     unique_id_suffix = "pwr_15min"
-    _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, hass, config):
         obis_code = config.get(CONF_OBIS_CODE, DEFAULT_OBIS_CODE)
@@ -110,6 +109,7 @@ class LenedaMeteringSensor(LenedaBaseSensor):
         self._attr_name = mapping["name"]
         self._attr_native_unit_of_measurement = mapping["unit"]
         self._attr_device_class = mapping["device_class"]
+        self._attr_state_class = mapping["state_class"]
         self._attr_extra_state_attributes = {
             "obis_code": obis_code,
             "description": mapping["description"],
@@ -173,7 +173,6 @@ class LenedaMeteringSensor(LenedaBaseSensor):
 class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
     """Hourly Aggregated metering data sensor."""
     unique_id_suffix = "energy_hourly"
-    _attr_state_class = SensorStateClass.TOTAL_INCREASING
 
     def __init__(self, hass, config):
         obis_code = config.get(CONF_OBIS_CODE, DEFAULT_OBIS_CODE)
@@ -181,6 +180,7 @@ class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
         self._attr_name = mapping["aggregated_name"]
         self._attr_native_unit_of_measurement = mapping["aggregation_unit"]
         self._attr_device_class = mapping["aggregation_device_class"]
+        self._attr_state_class = mapping["aggregation_state_class"]
         self._attr_extra_state_attributes = {
             "obis_code": obis_code,
             "description": mapping["description"],
