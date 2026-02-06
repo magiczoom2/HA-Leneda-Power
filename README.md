@@ -30,8 +30,10 @@ The power and energy sensors data can be visualized using [Statistics Graph Card
 1. **Download via HACS**   
    [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=magiczoom2&repository=HA-Leneda-power&category=integration)
 2. **Restart Home Assistant!**
-3. **Configure Integration**   
+3. **Configure Integration**
    [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=leneda)
+
+*Repeat step 3 to configure additional integrations/entries. Each entry has a unique identifier composed of a metering point and an obis code.*
 
 When adding the integration you will be prompted for the following values:
 - **Required** Get from your [Leneda profile](https://app.leneda.eu/my-profile)
