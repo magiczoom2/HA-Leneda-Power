@@ -8,14 +8,25 @@ Disclaimer: This is an unofficial custom integration. This project is not affili
 ```
 ---
 # <img src="docs/leneda_icon.svg" alt="Description" width="20" height="20"> <img src="docs/home-assistant-logomark-color-on-light.svg" alt="Description" width="20" height="20"> [Leneda Power](https://github.com/magiczoom2/HA-Leneda-Power)
-**A Home Assistant Integration** that imports electric power and energy statistics from the 
+**A Home Assistant Integration** that imports energy consumption and production statistics from the 
 <img src="docs/leneda_icon.svg" alt="Description" width="10" height="10"> 
 [Leneda API](https://www.leneda.lu/en/docs/api-reference) of Luxembourg energy providers and exposes them as sensors with statistics.
 
 ## Features
 ### Sensors
-- `Power Demand` sensor — electric power measurements (kW) aggregated to hourly statistics with value, min, max and mean.
-- `Energy Consumption` sensor — electric energy measurements (kWh) aggregated to hourly statistics with cumulative sum and value.
+- `Metering data` sensor 
+- `Aggregated metering data` sensor
+
+For example, the default OBIS code `1-1:1.29.0` shows electricity consumption as follows:
+- `Active Power Consumption` sensor — electric power measurements (kW) aggregated to hourly statistics with value, min, max and mean.
+- `Active Energy Consumption` sensor — electric energy measurements (kWh) aggregated to hourly statistics with cumulative sum and value.
+### Multiple Entries (Metering points and OBIS Codes)
+You can configure multiple entries per combination of metering point and [OBIS code](https://www.leneda.lu/en/docs/obis-code-meaning). Depending on what OBIS codes your Leneda metering point provides, your sensors can be for:
+- Electricity energy (kWh) and power (kW) consumption 
+- Electricity energy (kWh) and power (kW) production
+- Gas volume (m³) consumption
+
+![Multiple entries](./docs//multiple%20entries.png)
 
 ### Energy Dashboard
 The power and energy sensors can be connected to the [Energy Dashboard](https://www.home-assistant.io/dashboards/energy/)
@@ -30,12 +41,12 @@ The power and energy sensors data can be visualized using [Statistics Graph Card
 1. **Download via HACS**   
    [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=magiczoom2&repository=HA-Leneda-power&category=integration)
 2. **Restart Home Assistant!**
-3. **Configure Integration**
+3. **Configure Integration Entries**
    [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=leneda)
 
-*Repeat step 3 to configure additional integrations/entries. Each entry has a unique identifier composed of a metering point and an obis code.*
+*Repeat step 3 to configure additional entries. Each entry has a unique identifier composed of a metering point and an obis code.*
 
-When adding the integration you will be prompted for the following values:
+When configuring an entry, you will be prompted for the following values:
 - **Required** Get from your [Leneda profile](https://app.leneda.eu/my-profile)
   - `metering_point` — your Leneda metering point identifier.
   - `energy_id` — your Leneda energy identifier.
