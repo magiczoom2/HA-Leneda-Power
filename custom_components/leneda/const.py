@@ -49,7 +49,7 @@ OBIS_HA_MAP = {
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "1-1:3.29.0": {
-        "aggregated_name": "Reactive Energy Consumption",
+        "description": "Measured reactive consumption",
         "service_type": "Consumption",
         
         "name": "Reactive Power Consumption",
@@ -57,7 +57,7 @@ OBIS_HA_MAP = {
         "device_class": SensorDeviceClass.REACTIVE_POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
-        "description": "Measured reactive consumption",
+        "aggregated_name": "Reactive Energy Consumption",
         "aggregation_unit": UnitOfReactiveEnergy.KILO_VOLT_AMPERE_REACTIVE_HOUR,
         "aggregation_device_class": SensorDeviceClass.REACTIVE_ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
