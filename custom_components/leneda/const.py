@@ -1,4 +1,5 @@
 from homeassistant.const import UnitOfPower, UnitOfEnergy, UnitOfVolume, UnitOfReactivePower, UnitOfReactiveEnergy
+from homeassistant.util.unit_conversion import EnergyConverter, PowerConverter, VolumeConverter, ReactivePowerConverter, ReactiveEnergyConverter
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 
 """Constants for the Leneda integration."""
@@ -26,11 +27,13 @@ OBIS_HA_MAP = {
         
         "name": "Active Power Consumption",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Active Energy Consumption",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -40,11 +43,13 @@ OBIS_HA_MAP = {
         
         "name": "Active Power Production",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Active Energy Production",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -54,11 +59,13 @@ OBIS_HA_MAP = {
         
         "name": "Reactive Power Consumption",
         "unit": UnitOfReactivePower.KILO_VOLT_AMPERE_REACTIVE,
+        "unit_class": ReactivePowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.REACTIVE_POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Reactive Energy Consumption",
         "aggregation_unit": UnitOfReactiveEnergy.KILO_VOLT_AMPERE_REACTIVE_HOUR,
+        "aggregation_unit_class": ReactiveEnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.REACTIVE_ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -68,11 +75,13 @@ OBIS_HA_MAP = {
         
         "name": "Reactive Power Production",
         "unit": UnitOfReactivePower.KILO_VOLT_AMPERE_REACTIVE,
+        "unit_class": ReactivePowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.REACTIVE_POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Reactive Energy Production",
         "aggregation_unit": UnitOfReactiveEnergy.KILO_VOLT_AMPERE_REACTIVE_HOUR,
+        "aggregation_unit_class": ReactiveEnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.REACTIVE_ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -84,11 +93,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Consumption L1 (AIR)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Consumption L1 (AIR)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -98,11 +109,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Consumption L2 (ACR/ACF)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Consumption L2 (ACR/ACF)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -112,11 +125,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Consumption L3 (CEL)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Consumption L3 (CEL)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -126,11 +141,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Consumption L4 (APS/CER)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Consumption L4 (APS/CER)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -140,11 +157,13 @@ OBIS_HA_MAP = {
         
         "name": "Grid Power Consumption (Remaining)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Grid Energy Consumption (Remaining)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -156,11 +175,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Production L1 (AIR)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Production L1 (AIR)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -170,11 +191,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Production L2 (ACR/ACF)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Production L2 (ACR/ACF)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -184,11 +207,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Production L3 (CEL)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Production L3 (CEL)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -198,11 +223,13 @@ OBIS_HA_MAP = {
         
         "name": "Shared Power Production L4 (APS/CER)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Shared Energy Production L4 (APS/CER)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -212,11 +239,13 @@ OBIS_HA_MAP = {
         
         "name": "Grid Power Production (Remaining)",
         "unit": UnitOfPower.KILO_WATT,
+        "unit_class": PowerConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.POWER,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Grid Energy Production (Remaining)",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -228,11 +257,13 @@ OBIS_HA_MAP = {
         
         "name": "Gas Volume",
         "unit": UnitOfVolume.CUBIC_METERS,
+        "unit_class": VolumeConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.GAS,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Aggregated Gas Volume",
         "aggregation_unit": UnitOfVolume.CUBIC_METERS,
+        "aggregation_unit_class": VolumeConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.GAS,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -242,11 +273,13 @@ OBIS_HA_MAP = {
         
         "name": "Gas Standard Volume",
         "unit": UnitOfVolume.CUBIC_METERS,
+        "unit_class": VolumeConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.GAS,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Aggregated Gas Standard Volume",
         "aggregation_unit": UnitOfVolume.CUBIC_METERS,
+        "aggregation_unit_class": VolumeConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.GAS,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
@@ -256,11 +289,13 @@ OBIS_HA_MAP = {
         
         "name": "Gas Energy",
         "unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "unit_class": EnergyConverter.UNIT_CLASS,
         "device_class": SensorDeviceClass.ENERGY,
         "state_class": SensorStateClass.MEASUREMENT,
         
         "aggregated_name": "Aggregated Gas Energy",
         "aggregation_unit": UnitOfEnergy.KILO_WATT_HOUR,
+        "aggregation_unit_class": EnergyConverter.UNIT_CLASS,
         "aggregation_device_class": SensorDeviceClass.ENERGY,
         "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     }

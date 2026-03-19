@@ -108,6 +108,7 @@ class LenedaMeteringSensor(LenedaBaseSensor):
         mapping = OBIS_HA_MAP.get(obis_code, OBIS_HA_MAP[DEFAULT_OBIS_CODE])
         self._attr_name = mapping["name"]
         self._attr_native_unit_of_measurement = mapping["unit"]
+        self._attr_unit_class = mapping["unit_class"]
         self._attr_device_class = mapping["device_class"]
         self._attr_state_class = mapping["state_class"]
         self._attr_extra_state_attributes = {
@@ -166,7 +167,7 @@ class LenedaMeteringSensor(LenedaBaseSensor):
             mean_type=StatisticMeanType.ARITHMETIC, has_sum=False, name=self._attr_name,
             source="recorder", statistic_id=self.entity_id,
             unit_of_measurement=self._attr_native_unit_of_measurement,
-            unit_class=self._attr_device_class
+            unit_class=self._attr_unit_class
         )
         async_import_statistics(self.hass, metadata, stats)
 
@@ -179,6 +180,7 @@ class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
         mapping = OBIS_HA_MAP.get(obis_code, OBIS_HA_MAP[DEFAULT_OBIS_CODE])
         self._attr_name = mapping["aggregated_name"]
         self._attr_native_unit_of_measurement = mapping["aggregation_unit"]
+        self._attr_unit_class = mapping["aggregation_unit_class"]
         self._attr_device_class = mapping["aggregation_device_class"]
         self._attr_state_class = mapping["aggregation_state_class"]
         self._attr_extra_state_attributes = {
@@ -224,7 +226,7 @@ class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
             mean_type=StatisticMeanType.NONE, has_sum=True, name=self._attr_name,
             source="recorder", statistic_id=self.entity_id,
             unit_of_measurement=self._attr_native_unit_of_measurement,
-            unit_class=self._attr_device_class
+            unit_class=self._attr_unit_class
         )
 
         # 3. Handle Cumulative Sum (Vital for Energy Dashboard)
