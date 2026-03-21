@@ -180,7 +180,7 @@ class LenedaMeteringSensor(LenedaBaseSensor):
                 start=ts,
                 state=mean_val, mean=mean_val,
                 min=min(vals), max=max(vals),
-                last_reset=ts, sum=running_sum)
+                sum=running_sum)
             )
 
         metadata = StatisticMetaData(
@@ -279,8 +279,7 @@ class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
                 StatisticData(
                     start=item_time,
                     state=val,
-                    sum=running_sum,
-                    last_reset=item_time
+                    sum=running_sum
                 )
             )
 
