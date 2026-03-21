@@ -2,10 +2,7 @@ import logging
 from datetime import timedelta
 from typing import Any
 
-from homeassistant.components.sensor import (
-    SensorEntity,
-    SensorStateClass,
-)
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -32,10 +29,17 @@ SCAN_INTERVAL = timedelta(hours=POLLING_INTERVAL_HOURS)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
     """Set up Leneda Power and Energy sensors."""
-    async_add_entities([
-        LenedaMeteringSensor(hass, entry.data),
-        LenedaAggregatedMeteringSensor(hass, entry.data)
-    ], True)
+    config = entry.data
+    obis_code = config.get(CONF_OBIS_CODE, DEFAULT_OBIS_CODE)
+    mapping = OBIS_HA_MAP.get(obis_code, OBIS_HA_MAP[DEFAULT_OBIS_CODE])
+
+    entities = []
+    if "name" in mapping:
+        entities.append(LenedaMeteringSensor(hass, config))
+    if "aggregation_name" in mapping:
+        entities.append(LenedaAggregatedMeteringSensor(hass, config))
+
+    async_add_entities(entities, True)
 
 class LenedaBaseSensor(SensorEntity):
     """Common logic for Leneda API sensors."""
@@ -98,6 +102,17 @@ class LenedaBaseSensor(SensorEntity):
         except Exception as err:
             _LOGGER.error("Error fetching Leneda data from %s: %s", path, err)
         return {}
+    
+    async def _get_last_sum(self) -> float:
+            recorder = get_instance(self.hass)
+            last_sum_stats = await recorder.async_add_executor_job(
+                get_last_statistics, self.hass, 1, self.entity_id, True, {"sum"}
+            )
+            running_sum = 0.0
+            if last_sum_stats and self.entity_id in last_sum_stats:
+                running_sum = last_sum_stats[self.entity_id][0].get("sum") or 0.0
+            
+            return running_sum
 
 class LenedaMeteringSensor(LenedaBaseSensor):
     """15-minute metering data sensor (kW) - Aggregated to Hourly for Statistics."""
@@ -155,16 +170,21 @@ class LenedaMeteringSensor(LenedaBaseSensor):
                 hourly_data[hour_ts] = []
             hourly_data[hour_ts].append(float(ii["value"]))
 
-        stats = [
-            StatisticData(
+        stats = []
+        running_sum = await self._get_last_sum()
+        metadata = None
+        for ts, vals in hourly_data.items():
+            mean_val = mean(vals)
+            running_sum += mean_val
+            stats.append(StatisticData(
                 start=ts,
-                state=mean(vals), mean=mean(vals),
-                min=min(vals), max=max(vals)
-            ) for ts, vals in hourly_data.items()
-        ]
+                state=mean_val, mean=mean_val,
+                min=min(vals), max=max(vals),
+                last_reset=ts, sum=running_sum)
+            )
 
         metadata = StatisticMetaData(
-            mean_type=StatisticMeanType.ARITHMETIC, has_sum=False, name=self._attr_name,
+            mean_type=StatisticMeanType.ARITHMETIC, has_sum=True, name=self._attr_name,
             source="recorder", statistic_id=self.entity_id,
             unit_of_measurement=self._attr_native_unit_of_measurement,
             unit_class=self._attr_unit_class
@@ -178,7 +198,7 @@ class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
     def __init__(self, hass, config):
         obis_code = config.get(CONF_OBIS_CODE, DEFAULT_OBIS_CODE)
         mapping = OBIS_HA_MAP.get(obis_code, OBIS_HA_MAP[DEFAULT_OBIS_CODE])
-        self._attr_name = mapping["aggregated_name"]
+        self._attr_name = mapping["aggregation_name"]
         self._attr_native_unit_of_measurement = mapping["aggregation_unit"]
         self._attr_unit_class = mapping["aggregation_unit_class"]
         self._attr_device_class = mapping["aggregation_device_class"]
@@ -235,13 +255,7 @@ class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
         recorder = get_instance(self.hass)
 
         # --- 1. Get last SUM ---
-        last_sum_stats = await recorder.async_add_executor_job(
-            get_last_statistics, self.hass, 1, self.entity_id, True, {"sum"}
-        )
-
-        running_sum = 0.0
-        if last_sum_stats and self.entity_id in last_sum_stats:
-            running_sum = last_sum_stats[self.entity_id][0].get("sum") or 0.0
+        running_sum = await self._get_last_sum()
 
         # --- 2. Get last TIMESTAMP ---
         last_time = await self.get_last_timestamp()
@@ -265,7 +279,8 @@ class LenedaAggregatedMeteringSensor(LenedaBaseSensor):
                 StatisticData(
                     start=item_time,
                     state=val,
-                    sum=running_sum
+                    sum=running_sum,
+                    last_reset=item_time
                 )
             )
 
