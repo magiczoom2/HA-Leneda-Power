@@ -4,17 +4,26 @@ from homeassistant import config_entries
 from homeassistant.helpers import config_validation as cv
 from .const import (DOMAIN, 
                     CONF_API_KEY, CONF_ENERGY_ID, CONF_METERING_POINT, 
-                    CONF_OBIS_CODE, DEFAULT_OBIS_CODE, 
+                    CONF_OBIS_CODE, DEFAULT_OBIS_CODE, OBIS_HA_MAP,
                     CONF_INITIAL_SETUP_DAYS_TO_FETCH, DEFAULT_INITIAL_SETUP_DAYS_TO_FETCH)
 
 class LenedaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
+    
     async def async_step_user(self, user_input=None):
         if user_input is not None:
             unique_id = f"{user_input[CONF_METERING_POINT]}_{user_input[CONF_OBIS_CODE]}"
+            
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()
+            
             return self.async_create_entry(title=f"Leneda {unique_id}", data=user_input)
+
+        # Generate the options dictionary for the dropdown
+        obis_options = {
+            code: f"{code}: {details.get('name', 'Unknown')}" 
+            for code, details in OBIS_HA_MAP.items()
+        }
 
         return self.async_show_form(
             step_id="user",
@@ -22,7 +31,7 @@ class LenedaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_API_KEY): cv.string,
                 vol.Required(CONF_ENERGY_ID): cv.string,
                 vol.Required(CONF_METERING_POINT): cv.string,
-                vol.Required(CONF_OBIS_CODE, default=DEFAULT_OBIS_CODE): cv.string,
+                vol.Required(CONF_OBIS_CODE, default=DEFAULT_OBIS_CODE): vol.In(obis_options),
                 vol.Required(CONF_INITIAL_SETUP_DAYS_TO_FETCH, 
                              default=DEFAULT_INITIAL_SETUP_DAYS_TO_FETCH): cv.positive_int,
             })
