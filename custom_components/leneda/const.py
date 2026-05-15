@@ -255,21 +255,21 @@ OBIS_HA_MAP = {
         "description": "Measured consumed volume",
         "service_type": "Consumption",
         
-        "name": "Gas Volume Consumption",
-        "unit": UnitOfVolume.CUBIC_METERS,
-        "unit_class": VolumeConverter.UNIT_CLASS,
-        "device_class": SensorDeviceClass.GAS,
-        "state_class": SensorStateClass.TOTAL_INCREASING
+        "aggregation_name": "Gas Volume Consumption",
+        "aggregation_unit": UnitOfVolume.CUBIC_METERS,
+        "aggregation_unit_class": VolumeConverter.UNIT_CLASS,
+        "aggregation_device_class": SensorDeviceClass.GAS,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING
     },
     "7-1:99.23.17": {
         "description": "Measured consumed standard volume (Nm³)",
         "service_type": "Consumption",
         
-        "name": "Gas Standard Volume Consumption",
-        "unit": UnitOfVolume.CUBIC_METERS,
-        "unit_class": VolumeConverter.UNIT_CLASS,
-        "device_class": SensorDeviceClass.GAS,
-        "state_class": SensorStateClass.TOTAL_INCREASING,
+        "aggregation_name": "Gas Standard Volume Consumption",
+        "aggregation_unit": UnitOfVolume.CUBIC_METERS,
+        "aggregation_unit_class": VolumeConverter.UNIT_CLASS,
+        "aggregation_device_class": SensorDeviceClass.GAS,
+        "aggregation_state_class": SensorStateClass.TOTAL_INCREASING,
     },
     "7-20:99.33.17": {
         "description": "Measured consumed energy",
